@@ -1,6 +1,14 @@
 import {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
 
+const send_text = async (placeholder) => {
+    //console.log("Phone Number: ", placeholder);
+    await fetch("https://dev.stedi.me/twofactorlogin/" + placeholder, {
+      method: "POST",
+      headers: { "content-type":"application/text" }
+    });
+}
+
 const Login = () => {
   const [phone_number, set_number] = useState("");
   const [otp, set_otp] = useState(null);
@@ -30,7 +38,13 @@ const Login = () => {
         keyboardType="numeric"
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+
+      
+      <TouchableOpacity style={styles.button} onPress={() => {send_text(phone_number)}}>
+        <Text>Send Text</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => console.log("Submit button was pressed.")}>
         <Text>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -60,8 +74,12 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
     alignItems: "center",
-    backgroundColor: "gainsboro",
+    backgroundColor: "aliceblue",
+    margin: 3,
     padding: 16,
+    borderColor: "cornflowerblue",
+    borderRadius: 8,
+    borderWidth: 2,
     width: 196
   },
   countContainer: {
