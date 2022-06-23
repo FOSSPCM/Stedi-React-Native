@@ -9,6 +9,15 @@ const send_text = async (placeholder) => {
     });
 }
 
+const get_token = async (phone_number, otp) => {
+  const token_response = await fetch("https://dev.stedi.me/twofactorlogin/",{
+    method: "POST", 
+    body:JSON.stringify({otp, phone_number}),
+    headers: { "content-type":"application/json" }
+  });
+  const token_response_string = await token_response.text();
+}
+
 const Login = () => {
   const [phone_number, set_number] = useState("");
   const [otp, set_otp] = useState(null);
@@ -23,7 +32,7 @@ const Login = () => {
         onChangeText={set_number}
         value={phone_number}
         placeholderTextColor="lightskyblue"
-        placeholder="1-800-677-8257"  // 1-800-MS-SUCKS Don't know if this number actually works, don't really care.
+        placeholder="#-###-###-####"
         color="midnightblue"
         keyboardType="numeric"
       />
@@ -44,7 +53,10 @@ const Login = () => {
         <Text>Send Text</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => console.log("Submit button was pressed.")}>
+      <TouchableOpacity style={styles.button} onPress={() => {
+        let a = get_token(phone_number, otp)
+        console.log("Received Token.\n", a)
+        }}>
         <Text>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
