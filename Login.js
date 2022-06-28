@@ -2,23 +2,26 @@ import {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
 
 const send_text = async (placeholder) => {
-    //console.log("Phone Number: ", placeholder);
     await fetch("https://dev.stedi.me/twofactorlogin/" + placeholder, {
       method: "POST",
       headers: { "content-type":"application/text" }
     });
 }
 
-const get_token = async (phone_number, otp) => {
-  const token_response = await fetch("https://dev.stedi.me/twofactorlogin/",{
+const get_token = async (phone_number, otp, set_user_logged_on) => {
+  const token_response = await fetch("https://dev.stedi.me/twofactorlogin",{
     method: "POST", 
-    body:JSON.stringify({otp, phone_number}),
+    body:JSON.stringify({oneTimePassword:otp, phoneNumber:phone_number}),
     headers: { "content-type":"application/json" }
   });
+  const response_code = token_response.status;  //200 means logged in successfully.
+  console.log("Response Status Code: ", response_code);
+  if (response_code == 200) { set_user_logged_on = true; }
   const token_response_string = await token_response.text();
+  //console.log(token_response_string);
 }
 
-const Login = () => {
+const Login = (props) => {
   const [phone_number, set_number] = useState("");
   const [otp, set_otp] = useState(null);
   const [count, setCount] = useState(0);
@@ -31,8 +34,8 @@ const Login = () => {
         style={styles.input}
         onChangeText={set_number}
         value={phone_number}
-        placeholderTextColor="lightskyblue"
         placeholder="#-###-###-####"
+        placeholderTextColor="lightskyblue"
         color="midnightblue"
         keyboardType="numeric"
       />
@@ -48,15 +51,11 @@ const Login = () => {
         secureTextEntry={true}
       />
 
-      
       <TouchableOpacity style={styles.button} onPress={() => {send_text(phone_number)}}>
         <Text>Send Text</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => {
-        let a = get_token(phone_number, otp)
-        console.log("Received Token.\n", a)
-        }}>
+      <TouchableOpacity style={styles.button} onPress={() => {get_token(phone_number, otp, {set_user_logged_on:props.set_user_logged_on})}}>
         <Text>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>

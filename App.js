@@ -59,7 +59,7 @@ export default function App() {
     );
   } else {
     return (
-      <Login/>
+      <Login set_user_logged_on = {setUserLoggedOn} />
     )
   }
 
