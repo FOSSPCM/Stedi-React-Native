@@ -58,12 +58,8 @@ export default function App() {
     </NavigationContainer>
     );
   } else {
-    return (
-      <Login set_user_logged_on = {setUserLoggedOn} />
-    )
+    return (<Login set_user_logged_on = {setUserLoggedOn} />)
   }
-
-
 }
 
 const styles = StyleSheet.create({

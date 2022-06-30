@@ -5,9 +5,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 
 function Setting(props) {
+    var uname = props.loggedInUser;
+    if (uname == undefined) { uname = "Guest"; }
     return(
       <View>
-        <Text>Welcome, {props.loggedInUser}!</Text>
+        <Text>Welcome, {uname}!</Text>
       <Button
       title="Log In"
       onPress={() => Alert.alert('Simple Button pressed')}

@@ -2,21 +2,24 @@ import {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
 
 const send_text = async (placeholder) => {
-    await fetch("https://dev.stedi.me/twofactorlogin/" + placeholder, {
+    await fetch("https://dev.stedi.me/twofactorlogin" + placeholder, {
       method: "POST",
       headers: { "content-type":"application/text" }
     });
 }
 
-const get_token = async (phone_number, otp, set_user_logged_on) => {
+const get_token = async ({phone_number, otp, set_user_logged_on}) => {
+  set_user_logged_on(true)                    // THIS IS FOR TESTING PURPOSES ONLY. REMOVE OR COMMENT THIS LINE OUT FOR ACTUAL USE.
   const token_response = await fetch("https://dev.stedi.me/twofactorlogin",{
     method: "POST", 
     body:JSON.stringify({oneTimePassword:otp, phoneNumber:phone_number}),
     headers: { "content-type":"application/json" }
   });
+  
   const response_code = token_response.status;  //200 means logged in successfully.
   console.log("Response Status Code: ", response_code);
-  if (response_code == 200) { set_user_logged_on = true; }
+
+  if (response_code == 200) { set_user_logged_on(true) }
   const token_response_string = await token_response.text();
   //console.log(token_response_string);
 }
@@ -55,9 +58,10 @@ const Login = (props) => {
         <Text>Send Text</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => {get_token(phone_number, otp, {set_user_logged_on:props.set_user_logged_on})}}>
+      <TouchableOpacity style={styles.button} onPress={() => {get_token({phone_number, otp, set_user_logged_on:props.set_user_logged_on})}}>
         <Text>Submit</Text>
       </TouchableOpacity>
+
     </SafeAreaView>
   );
 };

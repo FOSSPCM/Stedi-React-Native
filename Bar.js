@@ -11,7 +11,7 @@ function Bar(props) {
             <Setting />  
         </View>
     )
-  }
+}
 
 export default Bar
 
