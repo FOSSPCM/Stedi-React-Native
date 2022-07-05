@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useLinkProps } from '@react-navigation/native';
 //import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Counter from './Counter.js';
 import SettingsScreen from './SettingsScreen.js';
@@ -26,7 +26,8 @@ export default function App() {
       >
         <Tab.Screen
           name='Home'
-          component={Home}
+          children={() => <Home loggedInUser={"X"}/>}   // PLEASE SEND HELP!
+          // component={Home}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (

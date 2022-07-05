@@ -1,4 +1,4 @@
-import { useLinkProps } from "@react-navigation/native";
+//import { useLinkProps } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View, Image } from 'react-native';
 import AppName from "./AppName";
