@@ -7,8 +7,8 @@ import Setting from "./Setting";
 function Bar(props) {
     return(
         <View style={styles.bar}>
-            <AppName loggedInUser={props.loggedInUser}/>
-            <Setting />  
+            <AppName />
+            <Setting loggedInUser={props.loggedInUser}/>  
         </View>
     )
 }
@@ -17,15 +17,15 @@ export default Bar
 
 const styles = StyleSheet.create({
     bar: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         width: '100%',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         backgroundColor: 'green',
-        height: '12%',
-        alignItems: 'flex-end',
+        height: '15%',
+        alignItems: 'flex-begin',
         paddingBottom: 5,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 8,
+        paddingRight: 8,
         
       },
 })

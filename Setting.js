@@ -5,14 +5,13 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements';
 
 function Setting(props) {
   var uname = props.loggedInUser;
-  console.log(uname);
   if (uname == undefined) { uname = "Guest"; }
   return(
-    <View>
+    <View style={styles.container}>
       <Text style={styles.text}>Welcome, {uname}!</Text>
       <Button
         title="Log Out"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        onPress={() => Alert.alert("Logging Out doesn't work yet")}
       />
     </View>
   )
@@ -21,6 +20,12 @@ function Setting(props) {
 const styles = StyleSheet.create({
   text: {
     color: "white"
+  },
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    width: "100%",
   }
 });
 

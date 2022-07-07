@@ -1,6 +1,12 @@
 import {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
 
+/*This is where we extract the email address. */
+var uname = "";
+export function set_uname(s) { uname = s; }
+export function get_uname() { return uname; }
+
+/* This is the function that will send a text message containing the one-time password. */
 const send_text = async (placeholder) => {
     await fetch("https://dev.stedi.me/twofactorlogin/" + placeholder, {
       method: "POST",
@@ -8,8 +14,9 @@ const send_text = async (placeholder) => {
     });
 }
 
-const get_token = async ({phone_number, otp, set_user_logged_on}) => {
-  set_user_logged_on(true)  // THIS IS FOR TESTING PURPOSES ONLY. REMOVE OR COMMENT THIS LINE OUT FOR ACTUAL USE.
+/* This function grabs the token used to log in from the server. */
+const get_token = async ({phone_number, otp, set_user_logged_on,}) => {
+  //set_user_logged_on(true)  // THIS IS FOR TESTING PURPOSES ONLY. REMOVE OR COMMENT THIS LINE OUT FOR ACTUAL USE.
   const token_response = await fetch("https://dev.stedi.me/twofactorlogin",{
     method: "POST", 
     body:JSON.stringify({oneTimePassword:otp, phoneNumber:phone_number}),
@@ -19,7 +26,6 @@ const get_token = async ({phone_number, otp, set_user_logged_on}) => {
   const response_code = token_response.status;  //200 means logged in successfully.
   console.log("Response Status Code: ", response_code);
 
-  // if (response_code == 200) { set_user_logged_on(true) }
   const token_response_string = await token_response.text();
   console.log(token_response_string);
 
@@ -30,7 +36,11 @@ const get_token = async ({phone_number, otp, set_user_logged_on}) => {
 
   const loggedInUser = await loggedInUser_response.text();
   console.log(loggedInUser);
-  props.loggedInUser = loggedInUser;
+  set_uname(loggedInUser);
+  //props.setUserName(loggedInUser);
+
+  // We will set the user-logged-on status to true at the very end.
+  if (response_code == 200) { set_user_logged_on(true) }
 }
 
 const Login = (props) => {
@@ -40,7 +50,7 @@ const Login = (props) => {
   const onPress = () => setCount(prevCount => prevCount + 1);
 
   return (
-    <SafeAreaView style={styles.margin}>
+    <SafeAreaView style={styles.a_margin}>
       <Text style={styles.text}>Phone Number</Text>
       <TextInput
         style={styles.input}
@@ -68,7 +78,9 @@ const Login = (props) => {
       </TouchableOpacity>
 
       {/*Submit button - the one you press when you actually commit to logging in.*/}
-      <TouchableOpacity style={styles.button} onPress={() => {get_token({phone_number, otp, set_user_logged_on:props.set_user_logged_on})}}>
+      <TouchableOpacity style={styles.button} onPress={() => {
+        get_token({phone_number, otp, set_user_logged_on:props.set_user_logged_on})
+        }}>
         <Text>Submit</Text>
       </TouchableOpacity>
 
@@ -84,7 +96,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   a_margin: {
-    marginTop: 100
+    marginTop: 20
   },
   text: {
     marginTop: 5,
