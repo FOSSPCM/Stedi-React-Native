@@ -78,9 +78,7 @@ const Login = (props) => {
       </TouchableOpacity>
 
       {/*Submit button - the one you press when you actually commit to logging in.*/}
-      <TouchableOpacity style={styles.button} onPress={() => {
-        get_token({phone_number, otp, set_user_logged_on:props.set_user_logged_on})
-        }}>
+      <TouchableOpacity style={styles.button} onPress={() => {get_token({phone_number, otp, set_user_logged_on:props.set_user_logged_on})}}>
         <Text>Submit</Text>
       </TouchableOpacity>
 
